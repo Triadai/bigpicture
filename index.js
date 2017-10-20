@@ -15,6 +15,7 @@
     displayImage,
     // popup video element
     displayVideo,
+    displaySwf,
     // container element to hold youtube / vimeo iframe
     iframeContainer,
     // iframe to hold youtube / vimeo player
@@ -123,6 +124,14 @@
       displayElement.src = options.vidSrc;
       checkVid();
     }
+    // if swf
+    else if (options.swfSrc) {
+      toggleLoadingIcon(true);
+      displayElement = displaySwf;
+      displayElement.querySelector('param[name="movie"]').value = options.swfSrc;
+      displayElement.querySelector('embed').src = options.swfSrc;
+      open();
+    }
     // local image / background image already loaded on page
     else {
       displayElement = displayImage;
@@ -173,6 +182,16 @@
     displayVideo.autoplay = true;
     displayVideo.controls = true;
     displayVideo.loop = true;
+
+    displaySwf = doc[createEl]('OBJECT');
+    displaySwf.id = 'bp_vid';
+    displaySwf.width = 640;
+    displaySwf.height = 418;
+    displaySwf.innerHTML = '<param name="wmode" value="opaque">' +
+      '<param name="allowfullscreen" value="true">' +
+      '<param name="allowscriptaccess" value="always">' +
+      '<param name="movie" value="">' +
+      '<embed src="" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="418" wmode="opaque">';
 
     // create caption elements
     caption = doc[createEl]('DIV');
